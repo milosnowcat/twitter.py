@@ -1,0 +1,166 @@
+{% extends 'post/feed.html' %}
+{% load humanize %}
+{% load urlize_target_blank %}
+{% block content %}
+<h2 class="section__title">Profile</h2>
+<br />
+<div class="about__container container grid">
+  <div>
+    <img class="testimonial__img" src="{{ user.profile.image.url }}" alt="" />
+    <h3 class="contact__title">
+      <a
+        class="button button--flex"
+        href="{{ user.profile.domain }}"
+        target="_blank"
+        >@{{ user.username }}</a
+      >
+      <a href="{% url 'profile' user %}" style="color: var(--first-color)">
+        <i class="uil uil-check-circle"></i>
+      </a>
+      <a
+        href="{% url 'chat:inbox' user %}"
+        class="button button--flex button--small button--link"
+      >
+        <i class="uil uil-chat button__icon"></i>
+      </a>
+      <span
+        class="button button--flex button--small button--link services__button"
+      >
+        <i class="uil uil-info-circle button__icon"></i>
+      </span>
+      <div class="services__modal">
+        <div class="services__modal-content">
+          <h4 class="services__modal-title">
+            User
+            <br />
+            settings
+          </h4>
+          <i class="uil uil-times services__modal-close"></i>
+          <ul class="services__modal-services grid">
+            <li class="services__modal-service">
+              <a
+                href="{% url 'block' user %}"
+                class="button button--flex button--small button--link"
+              >
+                {% if request.user not in user.profile.blocked %}
+                Block
+                {% else%}
+                Unblock
+                {% endif %}
+              </a>
+            </li>
+            <li class="services__modal-service">
+              <a
+                href="{% url 'report' user %}"
+                class="button button--flex button--small button--link"
+              >
+                Report
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </h3>
+    <span class="contact__subtitle"
+      >{{ user.profile.bio|urlize_target_blank }}</span
+    >
+    {% if request.user.is_authenticated %}
+    <br />
+    <br />
+    {% if user.username != request.user.username %}
+    {% if user not in request.user.profile.following %}
+    <a class="button button--flex" href="{% url 'follow' user %}">Follow</a>
+    {% else %}
+    <a class="button button--flex" href="{% url 'unfollow' user %}">Unfollow</a>
+    {% endif %}
+    {% else %}
+    <a class="button button--flex" href="{% url 'edit' %}">Edit</a>
+    {% endif %}
+    {% endif %}
+    <h3 class="contact__title">{{ user.offers.count }} Offers</h3>
+    <h3 class="contact__title">{{ user.profile.followers.count }} Followers</h3>
+    <h3 class="contact__title">{{ user.profile.following.count }} Following</h3>
+  </div>
+  <div>
+    {% for offer in offers %}
+    <div
+      class="project__bg"
+      id="{{ offer.pk }}"
+      onclick="location.href='{% url 'bus' user.username %}#{{ offer.pk }}'"
+    >
+      <div class="project__container container grid">
+        <time data-time="#" class="project__description">
+          <i class="uil uil-clock"></i>
+          {{ offer.timestamp|naturaltime }}
+          <i class="uil uil-ellipsis-v button__icon services__button"></i>
+          <div class="services__modal">
+            <div class="services__modal-content">
+              <h4 class="services__modal-title">
+                Post
+                <br />
+                settings
+              </h4>
+              <i class="uil uil-times services__modal-close"></i>
+              <ul class="services__modal-services grid">
+                <li class="services__modal-service">
+                  <a
+                    href="{% url 'post:oreport' offer.pk %}"
+                    class="button button--flex button--small button--link"
+                  >
+                    Report
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </time>
+        <br />
+        <div class="project__title">{{ offer.head|urlize_target_blank }}</div>
+        <br />
+        <p class="project__description">
+          {{ offer.content|urlize_target_blank }}
+          {% if offer.topics.all %}
+          {% for Topic in offer.topics.all %}
+          #{{ Topic.name }}
+          {% endfor %}
+          {% endif %}
+          <br />
+          {% if offer.image %}
+          <img src="{{ offer.image.url }}" alt="" class="project__img" />
+          {% endif %}
+          <br />
+          <a
+            href="{% url 'post:olike' offer.pk %}"
+            class="button button--flex button--white"
+            style="font-size: 1.25rem"
+          >
+            {{ offer.likes.all.count }}
+            {% if request.user in offer.likes.all %}
+            <i class="uil uil-heart-break button__icon"></i>
+            {% else %}
+            <i class="uil uil-heart-alt button__icon"></i>
+            {% endif %}
+          </a>
+          <a
+            href="{% url 'post:apply' offer.pk %}"
+            class="button button--flex button--white"
+            style="font-size: 1.25rem"
+          >
+            <i class="uil uil-comments button__icon"></i>
+          </a>
+          {% if offer.user == request.user %}
+          <a
+            href="{% url 'post:odelete' offer.pk %}"
+            class="button button--flex button--white"
+            style="font-size: 1.25rem"
+          >
+            <i class="uil uil-trash-alt button__icon"></i>
+          </a>
+          {% endif %}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

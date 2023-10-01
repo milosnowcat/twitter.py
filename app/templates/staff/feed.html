@@ -1,0 +1,82 @@
+{% extends 'app/layout.html' %}
+{% load humanize %}
+{% load urlize_target_blank %}
+{% block content %}
+<h2 class="section__title">Feed</h2>
+<span class="section__subtitle">Reported</span>
+{% for reoffer in offers %}
+{% if not reoffer.offer.is_delete %}
+<div class="project__bg">
+  <div class="project__container container grid">
+    <div class="project__data">
+      <a class="button button--flex button--white">
+        <img
+          class="testimonial__img"
+          src="{{ reoffer.offer.user.profile.image.url }}"
+          alt=""
+        />
+        <div class="button__icon">
+          @{{ reoffer.offer.user.username }}
+          <i class="uil uil-check-circle"></i>
+        </div>
+      </a>
+    </div>
+    <time data-time="#" class="project__description">
+      <i class="uil uil-clock"></i>
+      {{ reoffer.offer.timestamp|naturaltime }}
+    </time>
+    <div class="project__title">
+      {{ reoffer.offer.head|urlize_target_blank }}
+    </div>
+    <br />
+    <p class="project__description">
+      {{ reoffer.offer.content|urlize_target_blank }}
+      <br />
+      {% if reoffer.offer.image %}
+      <img src="{{ reoffer.offer.image.url }}" alt="" class="project__img" />
+      {% endif %}
+      <br />
+      <a class="button button--flex button--white" style="font-size: 1.25rem">
+        {{ reoffer.offer.likes.all.count }}
+        {% if request.user in reoffer.offer.likes.all %}
+        <i class="uil uil-heart-break button__icon"></i>
+        {% else %}
+        <i class="uil uil-heart-alt button__icon"></i>
+        {% endif %}
+      </a>
+      <a class="button button--flex button--white" style="font-size: 1.25rem">
+        <i class="uil uil-comments button__icon"></i>
+      </a>
+      <br />
+      <br />
+      {% if reoffer.offer.topics.all %}
+      Topics:
+      {% for Topic in reoffer.offer.topics.all %}
+      <a class="button button--flex button--white"> #{{ Topic.name }} </a>
+      {% endfor %}
+      {% endif %}
+      <br />
+      <br />
+      Reports: {{ reoffer.reported_by.count }}
+      <br />
+      <a
+        href="{% url 'staff:osave' reoffer.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-save button__icon"></i>
+      </a>
+      <a
+        href="{% url 'staff:odelete' reoffer.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-trash-alt button__icon"></i>
+      </a>
+    </p>
+  </div>
+</div>
+<br />
+{% endif %}
+{% endfor %}
+{% endblock %}

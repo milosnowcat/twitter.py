@@ -1,0 +1,54 @@
+{% extends 'chat/chat.html' %}
+{% block contacts %}
+<div class="hexagonChat__sidebar">
+  <div class="hexagonChat__navbar">
+    <span
+      class="hexagonChat__logo"
+      onclick="location.href='{% url 'chat:message_list' %}'"
+      >Chat</span
+    >
+    <div class="hexagonChat__user">
+      <span>@{{ request.user.username }}</span>
+    </div>
+  </div>
+  <div class="hexagonChat__search">
+    <div class="hexagonChat__searchForm">
+      <div
+        class="hexagonChat__searchForm_input"
+        onclick="location.href='{% url 'chat:users_list' %}'"
+      >
+        Find a user
+        <i class="uil uil-search"></i>
+      </div>
+    </div>
+  </div>
+  <div class="hexagonChat__chats">
+    {% for u in users %}
+    {% if u in request.user.profile.blocking %}
+    {% elif u in request.user.profile.blocked %}
+    {% else %}
+    <div
+      class="hexagonChat__userChat"
+      onclick="location.href='{% url 'chat:inbox' u %}'"
+    >
+      <img class="hexagonChat__userChat_img" src="{{ u.profile.image.url }}" alt="" />
+      <div class="hexagonChat__userChatInfo">
+        <span class="hexagonChat__userChatInfo_span"
+          >{{ u.first_name }}
+          {{ u.last_name }}
+          {% if u.is_superuser %}
+          <i class="uil uil-polygon"></i>
+          {% elif u.is_staff %}
+          <i class="uil uil-wrench"></i>
+          {% elif u.profile.business %}
+          <i class="uil uil-check-circle"></i>
+          {% endif %}
+        </span>
+        <p class="hexagonChat__userChatInfo_p">Hi there!</p>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

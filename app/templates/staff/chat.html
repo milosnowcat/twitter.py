@@ -1,0 +1,45 @@
+{% extends 'chat/chat.html' %}
+{% load humanize %}
+{% block contacts %}
+<div class="hexagonChat__sidebar">
+  <div class="hexagonChat__navbar">
+    <span
+      class="hexagonChat__logo"
+      onclick="location.href='{% url 'staff:chat' %}'"
+      >Chat</span
+    >
+  </div>
+  <div class="hexagonChat__search">
+    <div class="hexagonChat__searchForm">
+      <div class="hexagonChat__searchForm_input"></div>
+    </div>
+  </div>
+  <div class="hexagonChat__chats">
+    {% for chat in chats %}
+    <div
+      class="hexagonChat__userChat"
+      onclick="location.href='{% url 'staff:inbox' chat.pk %}'"
+    >
+      <img
+        class="hexagonChat__userChat_img"
+        src="{{ chat.chat.profile.image.url }}"
+        alt=""
+      />
+      <div class="hexagonChat__userChatInfo">
+        <span class="hexagonChat__userChatInfo_span"
+          >{{ chat.chat.first_name }}
+          {{ chat.chat.last_name }}
+          {% if chat.chat.is_superuser %}
+          <i class="uil uil-polygon"></i>
+          {% elif chat.chat.is_staff %}
+          <i class="uil uil-wrench"></i>
+          {% elif chat.chat.profile.business %}
+          <i class="uil uil-check-circle"></i>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

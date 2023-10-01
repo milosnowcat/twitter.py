@@ -1,0 +1,296 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% load urlize_target_blank %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/input.css' %}" />
+<h2 class="section__title">Post</h2>
+<span
+  class="section__subtitle"
+  onclick="location.href='{% url 'post:social' %}#{{ post.pk }}'"
+  style="cursor: pointer"
+  ><i class="uil uil-arrow-left"></i>Go back</span
+>
+{% if post.comment %}
+{% if post.comment.user in request.user.profile.blocking %}
+{% elif post.comment.user in request.user.profile.blocked %}
+{% else %}
+<div class="contact__container container grid">
+  <div>
+    {% if not post.comment.is_delete %}
+    <div class="qualification__data">
+      <div>
+        <h3 class="qualification__title">
+          @{{ post.comment.user.username }}
+          {% if post.comment.user.is_superuser %}
+          <i class="uil uil-polygon"></i>
+          {% elif post.comment.user.is_staff %}
+          <i class="uil uil-wrench"></i>
+          {% elif post.comment.user.profile.business %}
+          <i class="uil uil-check-circle"></i>
+          {% endif %}
+        </h3>
+        <span class="qualification__subtitle">
+          {{ post.comment.content }}
+          {% if post.comment.topics.all %}
+          {% for Topic in post.comment.topics.all %}
+          #{{ Topic.name }}
+          {% endfor %}
+          {% endif %}
+          {% if post.comment.image %}
+          <img src="{{ post.comment.image.url }}" alt="" class="project__img" />
+          {% endif %}
+        </span>
+        <div
+          class="qualification__calendar"
+          style="cursor: pointer"
+          onclick="location.href='{% url 'post:post' post.comment.pk %}'"
+        >
+          {{ post.comment.likes.all.count }}
+          {% if request.user in post.comment.likes.all %}
+          <i class="uil uil-heart-break"></i>
+          {% else %}
+          <i class="uil uil-heart-alt"></i>
+          {% endif %}
+          - <i class="uil uil-comments"></i> -
+          {% if post.comment.user == request.user %}
+          <i class="uil uil-trash-alt"></i>
+          {% endif %}
+        </div>
+      </div>
+      <div>
+        <span class="qualification__rounder"></span>
+        <span class="qualification__line"></span>
+      </div>
+      <div></div>
+    </div>
+    {% else %}
+    <div class="qualification__data">
+      <div>
+        <h3 class="qualification__title">
+          This post has been deleted
+        </h3>
+      </div>
+      <div>
+        <span class="qualification__rounder"></span>
+        <span class="qualification__line"></span>
+      </div>
+      <div></div>
+    </div>
+    {% endif %}
+    <div class="qualification__data">
+      <div></div>
+      <div>
+        <span class="qualification__rounder"></span>
+      </div>
+      <div></div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+<div
+  class="project__bg"
+  id="{{ post.pk }}"
+  onclick="location.href='{% url 'post:social' %}#{{ post.pk }}'"
+>
+  <div class="project__container container grid">
+    {% if not post.is_delete %}
+    <div class="project__data">
+      <a
+        href="{% url 'profile' post.user.username %}#{{ post.pk }}"
+        class="button button--flex button--white"
+      >
+        <img class="testimonial__img" src="{{ post.user.profile.image.url }}" alt="" />
+        <div class="button__icon">
+          @{{ post.user.username }}
+          {% if post.user.is_superuser %}
+          <i class="uil uil-polygon"></i>
+          {% elif post.user.is_staff %}
+          <i class="uil uil-wrench"></i>
+          {% elif post.user.profile.business %}
+          <i class="uil uil-check-circle"></i>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+    <time data-time="#" class="project__description">
+      <i class="uil uil-clock"></i>
+      {{ post.timestamp|naturaltime }}
+    </time>
+    <p class="project__description">
+      {{ post.content|urlize_target_blank }}
+      <br />
+      {% if post.image %}
+      <img src="{{ post.image.url }}" alt="" class="project__img" />
+      {% endif %}
+      <br />
+      <a
+        href="{% url 'post:like' post.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        {{ post.likes.all.count }}
+        {% if request.user in post.likes.all %}
+        <i class="uil uil-heart-break button__icon"></i>
+        {% else %}
+        <i class="uil uil-heart-alt button__icon"></i>
+        {% endif %}
+      </a>
+      {% if post.user == request.user %}
+      <a
+        href="{% url 'post:delete' post.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-trash-alt button__icon"></i>
+      </a>
+      {% endif %}
+      <br />
+      <br />
+      {% if post.topics.all %}
+      Topics:
+      {% for Topic in post.topics.all %}
+      <a
+        href="{% url 'post:topic' Topic %}"
+        class="button button--flex button--white"
+      >
+        #{{ Topic.name }}
+      </a>
+      {% endfor %}
+      {% endif %}
+    </p>
+    <br />
+    {% else %}
+    <p class="project__description">
+      This post has been deleted
+      <br />
+      <br />
+    </p>
+    <br />
+    {% endif %}
+  </div>
+</div>
+<br />
+<br />
+<div class="contact__container container grid" id="comments">
+  {% if request.user.profile.strikes is 0 %}
+  <form method="post" class="grid" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="contact__content">
+      {{ form.content }}
+      <label class="hexagon__input_file">
+        {{ form.image }}
+        <i class="uil uil-image-plus"></i>
+      </label>
+      <img src="" alt="" id="preview_img" class="project__img" />
+    </div>
+    <div class="contact__content">{{ form_t.name }}</div>
+    <input type="submit" value="Post" class="button button--flex" />
+  </form>
+  {% endif %}
+  <div>
+    {% for comment in comments %}
+    {% if comment.user in request.user.profile.blocking %}
+    {% elif comment.user in request.user.profile.blocked %}
+    {% else %}
+    <div class="qualification__data">
+      <div></div>
+      <div>
+        <span class="qualification__rounder"></span>
+        <span class="qualification__line"></span>
+      </div>
+      <div>
+        <h3 class="qualification__title">
+          @{{ comment.user.username }}
+          {% if comment.user.is_superuser %}
+          <i class="uil uil-polygon"></i>
+          {% elif comment.user.is_staff %}
+          <i class="uil uil-wrench"></i>
+          {% elif comment.user.profile.business %}
+          <i class="uil uil-check-circle"></i>
+          {% endif %}
+        </h3>
+        <span class="qualification__subtitle">
+          {{ comment.content }}
+          {% if comment.topics.all %}
+          {% for Topic in comment.topics.all %}
+          #{{ Topic.name }}
+          {% endfor %}
+          {% endif %}
+          {% if comment.image %}
+          <img src="{{ comment.image.url }}" alt="" class="project__img" />
+          {% endif %}
+        </span>
+        <div
+          class="qualification__calendar"
+          style="cursor: pointer"
+          onclick="location.href='{% url 'post:post' comment.pk %}'"
+        >
+          {{ comment.likes.all.count }}
+          {% if request.user in comment.likes.all %}
+          <i class="uil uil-heart-break"></i>
+          {% else %}
+          <i class="uil uil-heart-alt"></i>
+          {% endif %}
+          - <i class="uil uil-comments"></i> -
+          {% if comment.user == request.user %}
+          <i class="uil uil-trash-alt"></i>
+          {% endif %}
+        </div>
+        <br />
+        <br />
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="qualification__data">
+      <div></div>
+      <div>
+        <span class="qualification__rounder"></span>
+      </div>
+      <div></div>
+    </div>
+  </div>
+  <div>
+    <span
+      class="button button--flex button--small button--link services__button"
+    >
+      <i class="uil uil-info-circle button__icon"></i>
+    </span>
+    <div class="services__modal">
+      <div class="services__modal-content">
+        <h4 class="services__modal-title">
+          Post
+          <br />
+          settings
+        </h4>
+        <i class="uil uil-times services__modal-close"></i>
+        <ul class="services__modal-services grid">
+          <li class="services__modal-service">
+            <a
+              href="{% url 'block' post.user %}"
+              class="button button--flex button--small button--link"
+            >
+              {% if request.user not in post.user.profile.blocked %}
+              Block
+              {% else %}
+              Unblock
+              {% endif %}
+            </a>
+          </li>
+          <li class="services__modal-service">
+            <a
+              href="{% url 'post:report' post.pk %}"
+              class="button button--flex button--small button--link"
+            >
+              Report
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/input.js' %}"></script>
+{% endblock %}

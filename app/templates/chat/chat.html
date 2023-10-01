@@ -1,0 +1,12 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/chat.css' %}" />
+<div class="container grid">
+  {% block contacts %}
+  {% endblock contacts %}
+  {% block message %}
+  {% endblock message %}
+</div>
+<script src="{% static 'js/chat.js' %}"></script>
+{% endblock %}

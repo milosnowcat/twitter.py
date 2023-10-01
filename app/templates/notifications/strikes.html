@@ -1,0 +1,43 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/input.css' %}" />
+<h2 class="section__title">Strikes</h2>
+<br />
+<div class="container grid">
+  You have {{ strikes }} strike(s)
+  {% if strikes %}
+  {% if strikes is 1 %}
+  <br />
+  <br />
+  That means you won't be able to post or comment for {{
+  request.user.profile.strike_date|naturaltime }}.
+  {% elif strikes is 2 %}
+  <br />
+  <br />
+  That means you won't be able to post, comment or send messages for {{
+  request.user.profile.strike_date|naturaltime }}.
+  {% elif strikes >= 3 %}
+  <br />
+  <br />
+  That means your account has been permanently suspended.
+  {% endif %}
+  <br />
+  <br />
+  If you think this is a mistake you can send us a message
+  {% for admin in admins %}
+  <a href="{% url 'chat:inbox' admin %}" class="button button--flex">
+    here (@{{ admin.username }})
+  </a>
+  Or
+  {% endfor %}
+  sending a mail to
+  {% for admin in admins %}
+  <a href="mailto:{{ admin.email }}" class="button button--flex">
+    {{ admin.email }}
+  </a>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}
