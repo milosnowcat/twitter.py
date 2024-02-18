@@ -1,0 +1,42 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/input.css' %}" />
+<h2 class="section__title">Edit</h2>
+<br />
+<div class="container grid">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="contact__inputs grid">
+      <div class="contact__content">
+        <label class="contact__labe">Biography</label>
+        <input type="text" value="{{ request.user.profile.bio }}" name="bio" />
+      </div>
+      <div class="contact__content">
+        <label class="contact__labe hexagon__input_file">
+          {{ form.cv }}
+          {{ form.error.cv }}
+          <i class="uil uil-file-upload-alt"></i>
+        </label>
+        <img src="" alt="" id="preview_pdf" class="project__img" />
+      </div>
+      <div class="contact__content">
+        <label class="contact__labe hexagon__input_file">
+          {{ form.image }}
+          {{ form.error.image }}
+          <i class="uil uil-image-plus"></i>
+        </label>
+        <img
+          src="{{ user.profile.image.url }}"
+          alt=""
+          id="preview_img"
+          class="project__img"
+        />
+      </div>
+      <button class="button button--flex">Edit</button>
+    </div>
+  </form>
+</div>
+<script src="{% static 'js/input.js' %}"></script>
+{% endblock %}

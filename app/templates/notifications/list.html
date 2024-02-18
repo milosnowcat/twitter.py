@@ -1,0 +1,38 @@
+{% extends 'chat/chat.html' %}
+{% load humanize %}
+{% block contacts %}
+<div class="hexagonChat__sidebar">
+  <div class="hexagonChat__navbar">
+    <span
+      class="hexagonChat__logo"
+      onclick="location.href='{% url 'notifications:list' %}'"
+      >Notifications</span
+    >
+    <div class="hexagonChat__user">
+      <span
+        style="cursor: pointer"
+        onclick="location.href='{% url 'bus' request.user %}'"
+        >@{{ request.user.username }}</span
+      >
+    </div>
+  </div>
+  <div class="hexagonChat__search">
+    <div class="hexagonChat__searchForm"></div>
+  </div>
+  <div class="hexagonChat__chats">
+    {% for notification in notifications %}
+    <div
+      class="hexagonChat__userChat"
+      onclick="location.href='{{ notification.more }}'"
+    >
+      <div class="hexagonChat__userChatInfo">
+        <span class="hexagonChat__userChatInfo_span">
+          {{ notification.title }}
+        </span>
+        <p class="hexagonChat__userChatInfo_p">{{ notification.content }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

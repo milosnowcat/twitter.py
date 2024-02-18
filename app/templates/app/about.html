@@ -1,0 +1,323 @@
+{% extends 'app/layout.html' %}
+{% block content %}
+<h2 class="section__title">About</h2>
+<span class="section__subtitle">Hexagon</span>
+<div class="about__container container">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    version="1.1"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:svgjs="http://svgjs.dev/svgjs"
+    class="home__blob"
+  >
+    <svg
+      viewBox="0 0 120.98604583740234 138.99368286132812"
+    >
+      <svg
+        viewBox="0 0 121 134"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0)">
+          <path
+            d="M112.526 27.3193L68.9608 2.25675C63.727 -0.756156 57.2594 -0.756156 52.0257 2.25675L8.46078 27.3193C3.22703 30.3322 0 35.9121 0 41.9379V92.063C0 98.0888 3.22703 103.669 8.46078 106.682L52.0257 131.731C57.2594 134.744 63.727 134.744 68.9608 131.731L112.526 106.668C117.759 103.655 120.986 98.0888 120.986 92.0495V41.9244C121 35.9121 117.759 30.3322 112.526 27.3193ZM105.841 83.335C105.841 89.3608 102.614 94.9408 97.3803 97.9537L68.9608 114.288C63.727 117.301 57.2594 117.301 52.0257 114.288L23.6197 97.9537C18.3859 94.9408 15.1589 89.3743 15.1589 83.335V50.6524C15.1589 44.6266 18.3859 39.0466 23.6197 36.0337L52.0257 19.6992C57.2594 16.6863 63.727 16.6863 68.9608 19.6992L97.3668 36.0337C102.601 39.0466 105.828 44.6131 105.828 50.6524V83.335H105.841Z"
+          ></path>
+          <path
+            d="M91.9027 73.7147V60.285C91.9027 53.2594 88.1469 46.7607 82.0318 43.2479L70.3575 36.533C64.256 33.0202 56.7308 33.0202 50.6157 36.533L38.9415 43.2479C32.8399 46.7607 29.0706 53.2594 29.0706 60.285V73.7147C29.0706 80.7403 32.8264 87.239 38.9415 90.7518L50.6157 97.4667C56.7172 100.979 64.2425 100.979 70.3575 97.4667L82.0318 90.7518C88.1469 87.2255 91.9027 80.7403 91.9027 73.7147Z"
+          ></path>
+        </g>
+      </svg>
+    </svg>
+  </svg>
+  <div class="about__data">
+    <p class="about__description">
+      Hexagon is an online platform designed to help recent graduate students
+      find their first job in their field of study and gain valuable work
+      experience. We believe that talented students deserve meaningful
+      professional opportunities, and we are committed to helping them take
+      their first step in their careers.
+    </p>
+    <p class="about__description">
+      Our platform is built on the idea that the connection between students and
+      companies can be made easier and more effective. Hexagon acts as a social
+      network that allows students to connect with companies, participate in
+      practical projects, and develop practical skills while still in
+      university. We believe that work experience is crucial for professional
+      success, and we want to provide students with a way to obtain it in an
+      accessible and relevant manner.
+    </p>
+    <p class="about__description">
+      On Hexagon, students can create professional profiles, search for job
+      opportunities, participate in projects proposed by companies, and connect
+      with other students and industry professionals. Our platform uses
+      intelligent algorithms to recommend job opportunities that align with
+      students' skills, interests, and preferences, enabling them to find
+      opportunities that fit their professional goals.
+    </p>
+    <p class="about__description">
+      In addition, Hexagon also offers companies the ability to connect with
+      talented and promising students seeking employment. Companies can post
+      projects, search for student profiles, and establish relationships with
+      potential candidates. We believe that Hexagon is a win-win solution for
+      both students and companies, as it helps fulfill the needs of both sides.
+    </p>
+    <p class="about__description">
+      At Hexagon, we are committed to the privacy and security of our users. We
+      maintain high standards of data protection and strive to create a safe and
+      trustworthy environment for students and companies to interact.
+    </p>
+    <p class="about__description">
+      We are proud to offer Hexagon as a tool to help recent graduate students
+      in their job search and professional development. Our team is constantly
+      working on improving and expanding our platform to provide an exceptional
+      user experience and contribute to the success of our users.
+    </p>
+    <p class="about__description">
+      Thank you for choosing Hexagon and being part of our community! We look
+      forward to helping you on your journey to a successful professional
+      career!
+    </p>
+  </div>
+</div>
+<section class="about section" id="businesses">
+  <h2 class="section__title">Businesses</h2>
+  <span class="section__subtitle">Hexagon</span>
+  <div class="about__container container grid">
+    <a href="{% url 'registerb' %}" target="_blank" class="button button--flex">
+      Create a business account here
+    </a>
+    <a href="{% url 'startb' %}" target="_blank" class="button button--flex">
+      Convert your account to business here
+    </a>
+  </div>
+</section>
+<section class="about section" id="staff">
+  <h2 class="section__title">Staff</h2>
+  <span class="section__subtitle">Hexagon</span>
+  <div class="about__container container grid">
+    Want to help us keep Hexagon safe for all users?
+    <a href="{% url 'staff' %}" target="_blank" class="button button--flex">
+      Become a moderator
+    </a>
+  </div>
+</section>
+<section class="about section" id="terms">
+  <h2 class="section__title">Terms and Conditions</h2>
+  <span class="section__subtitle">Hexagon</span>
+  <div class="about__container container">
+    <div class="about__data">
+      <ul class="services__modal-services grid">
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Acceptance of Terms: By accessing and using the Hexagon platform,
+            you agree to be bound by these Terms and Conditions, as well as our
+            Privacy Policy.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            User Eligibility: Hexagon is intended for use by recent graduate
+            students who are seeking employment in their field of study. Users
+            must be at least 18 years of age or the legal age of majority in
+            their jurisdiction to use the platform. Hexagon reserves the right
+            to accept or reject any user registration or participation on the
+            platform.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            User Responsibilities: Users are responsible for providing accurate
+            and up-to-date information in their profiles and job applications.
+            Users must also adhere to all applicable laws and regulations, and
+            must not use the platform for any illegal or inappropriate content
+            or activities.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Job Postings and Project Proposals: Companies are solely responsible
+            for the accuracy and legality of the job postings and project
+            proposals they submit on Hexagon. Hexagon does not guarantee the
+            accuracy or quality of job postings or project proposals, and users
+            are encouraged to exercise caution and due diligence when applying
+            for jobs or participating in projects.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Privacy and Data Protection: Hexagon is committed to protecting the
+            privacy and security of user data. However, users acknowledge and
+            agree that Hexagon cannot guarantee the complete security of user
+            data, and users are responsible for taking appropriate measures to
+            protect their own data.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Intellectual Property: Hexagon and its content, including but not
+            limited to logos, trademarks, and software, are owned by RAH Code
+            and protected by intellectual property laws. Users may not use,
+            reproduce, or distribute Hexagon's content without prior written
+            consent.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            User Content: Users retain ownership of the content they submit to
+            Hexagon, but grant Hexagon a non-exclusive, royalty-free, perpetual,
+            and worldwide license to use, modify, and display their content on
+            the platform.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Limitation of Liability: Hexagon is not responsible for any damages,
+            losses, or liabilities arising from the use of the platform or the
+            content posted by users or companies. Users agree to use Hexagon at
+            their own risk.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Termination: Hexagon may terminate or suspend a user's account at
+            any time for any reason, including but not limited to violation of
+            these Terms and Conditions.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Changes to Terms and Conditions: Hexagon may modify or update these
+            Terms and Conditions at any time, and users are encouraged to review
+            them regularly.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Governing Law and Jurisdiction: These Terms and Conditions are
+            governed by the laws of the jurisdiction where Hexagon is based. Any
+            disputes arising from the use of the platform shall be resolved in
+            the courts of that jurisdiction.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Contact Us: If you have any questions or concerns about these Terms
+            and Conditions, please contact us at hexagon@rahcode.com.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="about section" id="privacy">
+  <h2 class="section__title">Privacy Notice</h2>
+  <span class="section__subtitle">Hexagon</span>
+  <div class="about__container container">
+    <div class="about__data">
+      <ul class="services__modal-services grid">
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Acceptance of Terms: By accessing and using the Hexagon platform,
+            you agree to be bound by these Terms and Conditions, as well as our
+            Privacy Policy.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Consent: By using Hexagon, users consent to the collection, use, and
+            disclosure of their personal information as described in this
+            Privacy Notice. Users have the option to withdraw their consent at
+            any time by contacting Hexagon.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Disclosure of Personal Information: Hexagon may share users'
+            personal information with companies or organizations for the purpose
+            of connecting users with potential job opportunities. However,
+            Hexagon does not sell or rent users' personal information to third
+            parties for marketing purposes.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Data Security: Hexagon takes appropriate measures to protect the
+            security and confidentiality of users' personal information.
+            However, users acknowledge and agree that no data transmission or
+            storage system is completely secure, and Hexagon cannot guarantee
+            the absolute security of user data.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            User Control: Users have the right to access, modify, or delete
+            their personal information on Hexagon's platform. Users can also
+            control the visibility of their information in their profile
+            settings.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Cookies and Tracking Technologies: Hexagon may use cookies and other
+            tracking technologies to collect information about users'
+            interactions with the platform. Users can manage their cookie
+            preferences through their web browser settings.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Third-Party Links: Hexagon's platform may contain links to
+            third-party websites or services. Hexagon is not responsible for the
+            privacy practices or content of these third-party websites or
+            services. Users are encouraged to review the privacy policies of
+            those websites or services.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Children's Privacy: Hexagon is not intended for use by children
+            under the age of 18. Hexagon does not knowingly collect personal
+            information from children. If a user believes that their child has
+            provided personal information to Hexagon, they should contact
+            Hexagon immediately.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Changes to Privacy Notice: Hexagon may update or modify this Privacy
+            Notice at any time, and users are encouraged to review it regularly.
+          </p>
+        </li>
+        <li class="services__modal-service">
+          <i class="uil uil-check-circle services__modal-icon"></i>
+          <p>
+            Contact Us: If you have any questions or concerns about this Privacy
+            Notice or Hexagon's data practices, please contact us at
+            hexagon@rahcode.com.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

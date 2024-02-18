@@ -1,0 +1,182 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% load urlize_target_blank %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/input.css' %}" />
+<h2 class="section__title">Topic</h2>
+<span class="section__subtitle">{{ topic }}</span>
+{% for post in posts %}
+{% if post.user in request.user.profile.blocking %}
+{% elif post.user in request.user.profile.blocked %}
+{% else %}
+<div
+  class="project__bg"
+  id="{{ post.pk }}"
+  onclick="location.href='{% url 'post:social' %}#{{ post.pk }}'"
+>
+  <div class="project__container container grid">
+    <div class="project__data">
+      <a
+        href="{% url 'profile' post.user.username %}#{{ post.pk }}"
+        class="button button--flex button--white"
+      >
+        <img class="testimonial__img" src="{{ post.user.profile.image.url }}" alt="" />
+        <div class="button__icon">
+          @{{ post.user.username }}
+          {% if post.user.is_superuser %}
+          <i class="uil uil-polygon"></i>
+          {% elif post.user.is_staff %}
+          <i class="uil uil-wrench"></i>
+          {% elif post.user.profile.business %}
+          <i class="uil uil-check-circle"></i>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+    <time data-time="#" class="project__description">
+      <i class="uil uil-clock"></i>
+      {{ post.timestamp|naturaltime }}
+    </time>
+    <p class="project__description">
+      {{ post.content|urlize_target_blank }}
+      <br />
+      {% if post.image %}
+      <img src="{{ post.image.url }}" alt="" class="project__img" />
+      {% endif %}
+      <br />
+      <a
+        href="{% url 'post:like' post.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        {{ post.likes.all.count }}
+        {% if request.user in post.likes.all %}
+        <i class="uil uil-heart-break button__icon"></i>
+        {% else %}
+        <i class="uil uil-heart-alt button__icon"></i>
+        {% endif %}
+      </a>
+      <a
+        href="{% url 'post:post' post.pk %}#comments"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-comments button__icon"></i>
+      </a>
+      {% if post.user == request.user %}
+      <a
+        href="{% url 'post:delete' post.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-trash-alt button__icon"></i>
+      </a>
+      {% endif %}
+      <br />
+      <br />
+      {% if post.topics.all %}
+      Topics:
+      {% for Topic in post.topics.all %}
+      <a
+        href="{% url 'post:topic' Topic %}"
+        class="button button--flex button--white"
+      >
+        #{{ Topic.name }}
+      </a>
+      {% endfor %}
+      {% endif %}
+    </p>
+    <br />
+  </div>
+</div>
+<br />
+{% endif %}
+{% endfor %}
+{% for offer in offers %}
+{% if offer.user in request.user.profile.blocking %}
+{% elif offer.user in request.user.profile.blocked %}
+{% else %}
+<div
+  class="project__bg"
+  id="{{ offer.pk }}"
+  onclick="location.href='{% url 'post:feed' %}#{{ offer.pk }}'"
+>
+  <div class="project__container container grid">
+    <div class="project__data">
+      <a
+        href="{% url 'bus' offer.user.username %}#{{ offer.pk }}"
+        class="button button--flex button--white"
+      >
+        <img
+          class="testimonial__img"
+          src="{{ offer.user.profile.image.url }}"
+          alt=""
+        />
+        <div class="button__icon">
+          @{{ offer.user.username }}
+          <i class="uil uil-check-circle"></i>
+        </div>
+      </a>
+    </div>
+    <time data-time="#" class="project__description">
+      <i class="uil uil-clock"></i>
+      {{ offer.timestamp|naturaltime }}
+    </time>
+    <div class="project__title">{{ offer.head|urlize_target_blank }}</div>
+    <br />
+    <p class="project__description">
+      {{ offer.content|urlize_target_blank }}
+      <br />
+      {% if offer.image %}
+      <img src="{{ offer.image.url }}" alt="" class="project__img" />
+      {% endif %}
+      <br />
+      <a
+        href="{% url 'post:olike' offer.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        {{ offer.likes.all.count }}
+        {% if request.user in offer.likes.all %}
+        <i class="uil uil-heart-break button__icon"></i>
+        {% else %}
+        <i class="uil uil-heart-alt button__icon"></i>
+        {% endif %}
+      </a>
+      <a
+        href="{% url 'chat:inbox' offer.user %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-comments button__icon"></i>
+      </a>
+      {% if offer.user == request.user %}
+      <a
+        href="{% url 'post:odelete' offer.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-trash-alt button__icon"></i>
+      </a>
+      {% endif %}
+      <br />
+      <br />
+      {% if offer.topics.all %}
+      Topics:
+      {% for Topic in offer.topics.all %}
+      <a
+        href="{% url 'post:otopic' Topic %}"
+        class="button button--flex button--white"
+      >
+        #{{ Topic.name }}
+      </a>
+      {% endfor %}
+      {% endif %}
+    </p>
+  </div>
+</div>
+<br />
+{% endif %}
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/input.css' %}" />
+<h2 class="section__title">Mail verify</h2>
+<br />
+<div class="container grid">
+  We've sent you an email to verify your identity
+  <br />
+  <br />
+  Verification link expires in 10 minutes
+  <br />
+  <br />
+  If you can't find the mail in your inbox, try searching for it in spam
+  <br />
+  <br />
+  Or
+  <a href="{% url 'request-new-link-from-email' %}" class="button button--flex">
+    Click here to forward the email
+  </a>
+</div>
+{% endblock %}

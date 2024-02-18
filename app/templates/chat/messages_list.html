@@ -1,0 +1,76 @@
+{% extends 'chat/chat.html' %}
+{% load humanize %}
+{% block contacts %}
+<div class="hexagonChat__sidebar">
+  <div class="hexagonChat__navbar">
+    <span
+      class="hexagonChat__logo"
+      onclick="location.href='{% url 'chat:message_list' %}'"
+      >Chat</span
+    >
+    <div class="hexagonChat__user">
+      <span
+        style="cursor: pointer"
+        onclick="location.href='{% url 'chat:inbox' request.user %}'"
+        >@{{ request.user.username }}</span
+      >
+    </div>
+  </div>
+  <div class="hexagonChat__search">
+    <div class="hexagonChat__searchForm">
+      <div
+        class="hexagonChat__searchForm_input"
+        onclick="location.href='{% url 'chat:users_list' %}'"
+      >
+        Find a user
+        <i class="uil uil-search"></i>
+      </div>
+    </div>
+  </div>
+  <div class="hexagonChat__chats">
+    {% for message in messages_list %}
+    {% for us in other_users %}
+    {% if us in request.user.profile.blocking %}
+    {% elif us in request.user.profile.blocked %}
+    {% else %}
+    {% if us.pk == message.recipient.pk or us.pk == message.sender.pk %}
+    <div
+      class="hexagonChat__userChat"
+      onclick="location.href='{% url 'chat:inbox' us %}'"
+    >
+      <img class="hexagonChat__userChat_img" src="{{ us.profile.image.url }}" alt="" />
+      <div class="hexagonChat__userChatInfo">
+        <span class="hexagonChat__userChatInfo_span"
+          >{{ us.first_name }}
+          {{ us.last_name }}
+          {% if us.is_superuser %}
+          <i class="uil uil-polygon"></i>
+          {% elif us.is_staff %}
+          <i class="uil uil-wrench"></i>
+          {% elif us.profile.business %}
+          <i class="uil uil-check-circle"></i>
+          {% endif %}
+        </span>
+        {% if message.sender == request.user %}
+        <p class="hexagonChat__userChatInfo_p">
+          {% if message.is_read %}
+          <i class="uil uil-check-circle"></i>
+          {% else %}
+          <i class="uil uil-check"></i>
+          {% endif %}
+          You: {{ message.message }} - {{ message.date|naturaltime }}
+        </p>
+        {% else %}
+        <p class="hexagonChat__userChatInfo_p">
+          {{ us }}: {{ message.message }} - {{ message.date|naturaltime }}
+        </p>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'chat/chat.html' %}
+{% load humanize %}
+{% load urlize_target_blank %}
+{% block message %}
+<div class="hexagonChat__chat">
+  <div class="hexagonChat__chatInfo">
+    <i
+      class="uil uil-arrow-left hexagonChat__chatIcons_img"
+      onclick="location.href='{% url 'staff:chat' %}'"
+    ></i>
+    <span
+      >@{{ other_person.username }}
+      {% if other_person.is_superuser %}
+      <i class="uil uil-polygon"></i>
+      {% elif other_person.is_staff %}
+      <i class="uil uil-wrench"></i>
+      {% elif other_person.profile.business %}
+      <i class="uil uil-check-circle"></i>
+      {% endif %}
+    </span>
+    <div class="hexagonChat__chatIcons">
+      <i class="uil uil-user-plus hexagonChat__chatIcons_img"></i>
+      <i class="uil uil-ellipsis-h hexagonChat__chatIcons_img"></i>
+    </div>
+  </div>
+  <div class="hexagonChat__messages" id="chat">
+    {% if other_person == you %}
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.is_system %}
+    <div class="hexagonChat__messageSystem">
+      <p>{{ message.message }}</p>
+    </div>
+    {% else %}
+    <div class="hexagonChat__message hexagonChat__owner">
+      <div class="hexagonChat__messageContent">
+        <p class="hexagonChat__messageContent_p hexagonChat__owner_p">
+          {% if message.image %}
+          <img src="{{ message.image.url }}" alt="" class="project__img" />
+          {% else %}
+          {{ message.message|urlize_target_blank }}
+          {% endif %}
+          {% if message.is_read %}
+          <i class="uil uil-check-circle"></i>
+          {% else %}
+          <i class="uil uil-check"></i>
+          {% endif %}
+        </p>
+        <span>{{ message.date|naturaltime }}</span>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="hexagonChat__messageSystem">
+      <p>No messages yet</p>
+    </div>
+    {% endif %}
+    {% else %}
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.is_system %}
+    <div class="hexagonChat__messageSystem">
+      <p>{{ message.message }}</p>
+    </div>
+    {% else %}
+    {% if message.sender == other_person %}
+    <div class="hexagonChat__message">
+      <div class="hexagonChat__messageContent">
+        <p class="hexagonChat__messageContent_p">
+          {% if message.image %}
+          <img src="{{ message.image.url }}" alt="" class="project__img" />
+          {% else %}
+          {{ message.message|urlize_target_blank }}
+          {% endif %}
+        </p>
+        <span>{{ message.date|naturaltime }}</span>
+      </div>
+    </div>
+    {% else %}
+    <div class="hexagonChat__message hexagonChat__owner">
+      <div class="hexagonChat__messageContent">
+        <p class="hexagonChat__messageContent_p hexagonChat__owner_p">
+          {% if message.image %}
+          <img src="{{ message.image.url }}" alt="" class="project__img" />
+          {% else %}
+          {{ message.message|urlize_target_blank }}
+          {% endif %}
+          {% if message.is_read %}
+          <i class="uil uil-check-circle"></i>
+          {% else %}
+          <i class="uil uil-check"></i>
+          {% endif %}
+        </p>
+        <span>{{ message.date|naturaltime }}</span>
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="hexagonChat__messageSystem">
+      <p>No messages yet</p>
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+  <div class="hexagonChat__input">
+    <a
+      href="{% url 'staff:cstrike' report.pk %}"
+      class="hexagonChat__send_button"
+      >Strike</a
+    >
+    <a
+      href="{% url 'staff:cdismiss' report.pk %}"
+      class="hexagonChat__send_button"
+      >Dismiss</a
+    >
+  </div>
+</div>
+{% endblock %}

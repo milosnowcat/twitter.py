@@ -1,0 +1,191 @@
+{% extends 'chat/chat.html' %}
+{% load humanize %}
+{% load urlize_target_blank %}
+{% block message %}
+<div class="hexagonChat__chat">
+  <div class="hexagonChat__chatInfo">
+    <i
+      class="uil uil-arrow-left hexagonChat__chatIcons_img"
+      onclick="location.href='{% url 'chat:message_list' %}'"
+    ></i>
+    <span
+      onclick="location.href='{% url 'bus' other_person %}'"
+      style="cursor: pointer"
+      >@{{ other_person.username }}
+      {% if other_person.is_superuser %}
+      <i class="uil uil-polygon"></i>
+      {% elif other_person.is_staff %}
+      <i class="uil uil-wrench"></i>
+      {% elif other_person.profile.business %}
+      <i class="uil uil-check-circle"></i>
+      {% endif %}
+    </span>
+    <div class="hexagonChat__chatIcons">
+      <i
+        class="uil uil-user-plus hexagonChat__chatIcons_img"
+        onclick="location.href='{% url 'follow' other_person %}'"
+        {% if you not in other_person.profile.followers %}
+        title="Follow @{{ other_person }}"
+        {% else %}
+        title="Unfollow @{{ other_person }}"
+        {% endif %}
+      ></i>
+      <i
+        class="uil uil-ellipsis-h hexagonChat__chatIcons_img services__button"
+      ></i>
+      <div class="services__modal">
+        <div class="services__modal-content">
+          <h4 class="services__modal-title">
+            Chat
+            <br />
+            settings
+          </h4>
+          <i class="uil uil-times services__modal-close"></i>
+
+          <ul class="services__modal-services grid">
+            <li class="services__modal-service">
+              <a
+                href="{% url 'block' other_person %}"
+                class="button button--flex button--small button--link"
+              >
+                {% if request.user not in other_person.profile.blocked %}
+                Block
+                {% else %}
+                Unblock
+                {% endif %}
+              </a>
+            </li>
+            <li class="services__modal-service">
+              <a
+                href="{% url 'chat:report' other_person %}"
+                class="button button--flex button--small button--link"
+              >
+                Report
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hexagonChat__messages" id="chat">
+    {% if other_person == you %}
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.is_system %}
+    <div class="hexagonChat__messageSystem">
+      <p>{{ message.message }}</p>
+    </div>
+    {% else %}
+    <div class="hexagonChat__message hexagonChat__owner">
+      <div class="hexagonChat__messageContent">
+        <p class="hexagonChat__messageContent_p hexagonChat__owner_p">
+          {% if message.image %}
+          <img src="{{ message.image.url }}" alt="" class="project__img" />
+          {% else %}
+          {{ message.message|urlize_target_blank }}
+          {% endif %}
+          {% if message.is_read %}
+          <i class="uil uil-check-circle"></i>
+          {% else %}
+          <i class="uil uil-check"></i>
+          {% endif %}
+        </p>
+        <span>{{ message.date|naturaltime }}</span>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="hexagonChat__messageSystem">
+      <p>No messages yet</p>
+    </div>
+    {% endif %}
+    {% else %}
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.is_system %}
+    <div class="hexagonChat__messageSystem">
+      <p>{{ message.message }}</p>
+    </div>
+    {% else %}
+    {% if message.sender == other_person %}
+    <div class="hexagonChat__message">
+      <div class="hexagonChat__messageContent">
+        <p class="hexagonChat__messageContent_p">
+          {% if message.image %}
+          <img src="{{ message.image.url }}" alt="" class="project__img" />
+          {% else %}
+          {{ message.message|urlize_target_blank }}
+          {% endif %}
+        </p>
+        <span>{{ message.date|naturaltime }}</span>
+      </div>
+    </div>
+    {% else %}
+    <div class="hexagonChat__message hexagonChat__owner">
+      <div class="hexagonChat__messageContent">
+        <p class="hexagonChat__messageContent_p hexagonChat__owner_p">
+          {% if message.image %}
+          <img src="{{ message.image.url }}" alt="" class="project__img" />
+          {% else %}
+          {{ message.message|urlize_target_blank }}
+          {% endif %}
+          {% if message.is_read %}
+          <i class="uil uil-check-circle"></i>
+          {% else %}
+          <i class="uil uil-check"></i>
+          {% endif %}
+        </p>
+        <span>{{ message.date|naturaltime }}</span>
+      </div>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% else %}
+    <div class="hexagonChat__messageSystem">
+      <p>No messages yet</p>
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+  {% if other_person in you.profile.blocking %}
+  {% elif other_person in you.profile.blocked %}
+  {% elif request.user.profile.strikes > 1 %}
+  {% else %}
+  <form
+    action="{% url 'chat:inbox' other_person.username %}"
+    method="post"
+    class="hexagonChat__input"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <input type="hidden" name="recipient" value="{{ other_person.pk }}" />
+    <input type="hidden" name="you" value="{{ you.pk }}" />
+    <input
+      type="text"
+      placeholder="Type something"
+      class="hexagonChat__input_input"
+      name="message"
+    />
+    <label class="hexagonChat__input_file">
+      <input type="file" name="img" accept="image/*" onchange="previewFile()" />
+      <i class="uil uil-image-plus"></i>
+    </label>
+    <button class="hexagonChat__send_button">Send</button>
+  </form>
+  {% endif %}
+</div>
+<div class="services__modal" id="preview_img">
+  <div class="services__modal-content">
+    <h4 class="services__modal-title">Preview</h4>
+    <i class="uil uil-times services__modal-close"></i>
+    <ul class="services__modal-services grid">
+      <li class="services__modal-service">
+        <img src="" alt="" class="project__img" />
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

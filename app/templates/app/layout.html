@@ -1,0 +1,176 @@
+<!--
+                     .                    .                           
+                :-:--=:-:::.             :=-**##*=:                   
+                 :=----------.         .-%@@@@@@@@@%:                 
+                :-------------:        :@@@@@@@@@@@@%.                
+               :-=-----------==:       +@@@@@@@@@@@@@#                
+             .------------=------.     =@@@@@@@@@@@@@#                
+              :=-=-------===-=--      .+%@@@@@@@@@@@#=                
+               --=--------==-=-.       -*%@@@@@@@@@*-.                
+                  ::----===+-             .#%@@@@*.                   
+                     -+++=: .               :+##+                     
+                    -+=====.              .=%@@%%%#=                  
+                 :-----------:.        :+#%%%@@@@@%@%+-               
+               -----------------      -%%%%%@@@%@@%%@%%*              
+              .-==----------==--:     #%%%@%@@@@@@@@@@%%.             
+              :-=+----------*=---    =%%%@@%%@@@%%@@@%%%=             
+              ---=----------*----:  .#%%%@@%%@@@%@%@@%%%%             
+             :-===----------+=---=  -#%%%@@%%@%@%@%@@%%%%=            
+               --=----------=#==+.   ==+%@@%%@@@%@%@@*++.             
+               --=-----------*=---  :===#@@%%@@@%@%%%--=              
+               -==-----------++--=  ---:#@%@@@%%%@@@%--=              
+               -=------------=:--=. =-- %@%%%%%%@%%%@=-=              
+              .-+-------------.:---.--: %%%%%%%%@%%@@+==              
+              :-++*++++++*+***. --=+--  *###########**-=              
+              --*+++++++++*+++: :--*-: :------=------*-=              
+              =-*++++++++*+***- .--*-. :-------------+-=              
+             .--*+++=+*++*+***+ :==*=: -------=------===:             
+             :=+++++==+++*++**+ -*++=. -------+-------+=:             
+              -++++=+==**+++***  :-:   -------+-------+.              
+               -+++=++=****+**#        -------+=------=               
+               .++==*=---=*+**+        =------+*------=               
+                ----=    :---=          ====-.::+====                 
+           :**#==---=:   ----= ..   .:::=--=+*%#*--=+***. .--:..      
+           .=+**#=--==   :=--=%@*:.-=+%%*--=: ::+=--+***+=#@%*-=-::.  
+               :+=--=. :::=--=:.-*#%*--=*---+-+**=--=--=+**+*=**%@%=  
+                 =--= .#%%=--=.  +*#%#= +---#%++#=---.+%@%+  .+++*+-  
+                 ====   .:+===:   -==+= :===*+: -==== .--:.      ..   
+                 =--=     ----:         .----   :=---                 
+                 ----     :---:         .=---   .=---                 
+                 ----     :---:         .=---    =---                 
+                 ---:     :---:         .=---    +---                 
+                 +##%.    =*##-         -%%#:    %%%#                 
+                :@@@@-    #@@@+         %@@@*   :@@@%:                
+                .====.    -++=:         =+==-    --==.                
+@milosnowcat
+-->
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--==================== UNICONS ====================-->
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <!--==================== SWIPER CSS ====================-->
+    <link
+      rel="stylesheet"
+      href="https://www.rahcode.com/assets/css/swiper-bundle.min.css"
+    />
+    <!--==================== CSS ====================-->
+    <link
+      rel="stylesheet"
+      href="https://www.rahcode.com/assets/css/styles.css"
+    />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="{% static 'img/favicon_transparent_32x32.png' %}"
+    />
+    <title>Hexagon</title>
+  </head>
+  <body>
+    <!--==================== HEADER ====================-->
+    <header class="header" id="header">
+      <nav class="nav container">
+        <a href="{% url 'home' %}" class="nav__logo">Hexagon</a>
+        <div class="nav__menu" id="nav-menu">
+          <ul class="nav__list grid">
+            <li class="nav__item">
+              <a href="{% url 'post:feed' %}" class="nav__link">
+                <i class="uil uil-bag-alt nav__icon"></i>
+                Feed
+              </a>
+            </li>
+            <li class="nav__item">
+              <a href="{% url 'post:social' %}" class="nav__link">
+                <i class="uil uil-globe nav__icon"></i>
+                Social
+              </a>
+            </li>
+            <li class="nav__item">
+              <a href="{% url 'chat:message_list' %}" class="nav__link">
+                <i class="uil uil-chat nav__icon"></i>
+                Chat
+              </a>
+            </li>
+            {% if request.user.is_authenticated %}
+            <li class="nav__item">
+              <a href="{% url 'bus' request.user %}" class="nav__link">
+                <i class="uil uil-user-circle nav__icon"></i>
+                @{{ request.user }}
+              </a>
+            </li>
+            {% if request.user.is_staff %}
+            <li class="nav__item">
+              <a href="{% url 'staff:home' %}" class="nav__link">
+                <i class="uil uil-wrench nav__icon"></i>
+                Staff
+              </a>
+            </li>
+            {% endif %}
+            <li class="nav__item">
+              <a href="{% url 'logout' %}" class="nav__link">
+                <i class="uil uil-sign-out-alt nav__icon"></i>
+                Logout
+              </a>
+            </li>
+            {% else %}
+            <li class="nav__item">
+              <a href="{% url 'register' %}" class="nav__link">
+                <i class="uil uil-power nav__icon"></i>
+                Register
+              </a>
+            </li>
+            <li class="nav__item">
+              <a href="{% url 'login' %}" class="nav__link">
+                <i class="uil uil-sign-in-alt nav__icon"></i>
+                Login
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+          <i class="uil uil-times nav__close" id="nav-close"></i>
+        </div>
+        <div class="nav__btns">
+          <a href="{% url 'notifications:list' %}" class="nav__link">
+            <i class="uil uil-bell change-theme"></i>
+          </a>
+          <!-- Theme change button -->
+          <i class="uil uil-moon change-theme" id="theme-button"></i>
+          <div class="nav__toggle" id="nav-toggle">
+            <i class="uil uil-apps"></i>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!--==================== MAIN ====================-->
+    <main class="main">
+      <section class="section">
+        {% if msgs %}
+        {% for msg in msgs %}
+        <div class="button button--flex {{ message.tags }}">{{ msg }}</div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
+      </section>
+    </main>
+    <!--==================== FOOTER ====================-->
+    <footer class="footer" id="foot"></footer>
+    <!--==================== SCROLL TOP ====================-->
+    <a href="#" class="scrollup" id="scroll-up">
+      <i class="uil uil-arrow-up scrollup__icon"></i>
+    </a>
+    <!--==================== SWIPER JS ====================-->
+    <script src="https://www.rahcode.com/assets/js/swiper-bundle.min.js"></script>
+    <!--==================== MAIN JS ====================-->
+    <script
+      src="https://www.rahcode.com/assets/js/main.js"
+      type="module"
+    ></script>
+  </body>
+</html>

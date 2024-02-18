@@ -1,0 +1,168 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load humanize %}
+{% load urlize_target_blank %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/input.css' %}" />
+<h2 class="section__title">Feed</h2>
+<br />
+{% if user.profile.business %}
+<div class="contact__container container grid">
+  <div>
+    <img class="testimonial__img" src="{{ user.profile.image.url }}" alt="" />
+    <h3 class="contact__title">
+      @{{ user.username }}
+      <i class="uil uil-check-circle"></i>
+    </h3>
+    <span class="contact__subtitle"
+      >{{ user.profile.bio|urlize_target_blank }}</span
+    >
+    <h3 class="contact__title">{{ user.offers.count }} Offers</h3>
+    <h3 class="contact__title">{{ user.profile.followers.count }} Followers</h3>
+    <h3 class="contact__title">{{ user.profile.following.count }} Following</h3>
+  </div>
+  {% if request.user.profile.strikes is 0 %}
+  <form
+    method="post"
+    class="contact__form grid"
+    ,
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <div class="contact__content">{{ form.head }}</div>
+    <div class="contact__content">
+      {{ form.content }}
+      <label class="hexagon__input_file">
+        {{ form.image }}
+        <i class="uil uil-image-plus"></i>
+      </label>
+      <img src="" alt="" id="preview_img" class="project__img" />
+    </div>
+    <div class="contact__content">{{ form_t.name }}</div>
+    <input type="submit" value="Post" class="button button--flex" />
+  </form>
+  {% endif %}
+</div>
+<br />
+{% endif %}
+{% for offer in offers %}
+{% if offer.user in request.user.profile.blocking %}
+{% elif offer.user in request.user.profile.blocked %}
+{% else %}
+<div
+  class="project__bg"
+  id="{{ offer.pk }}"
+  onclick="location.href='{% url 'post:feed' %}#{{ offer.pk }}'"
+>
+  <div class="project__container container grid">
+    <div class="project__data">
+      <a
+        href="{% url 'bus' offer.user.username %}#{{ offer.pk }}"
+        class="button button--flex button--white"
+      >
+        <img
+          class="testimonial__img"
+          src="{{ offer.user.profile.image.url }}"
+          alt=""
+        />
+        <div class="button__icon">
+          @{{ offer.user.username }}
+          <i class="uil uil-check-circle"></i>
+        </div>
+      </a>
+    </div>
+    <time data-time="#" class="project__description">
+      <i class="uil uil-clock"></i>
+      {{ offer.timestamp|naturaltime }}
+      <i class="uil uil-ellipsis-v button__icon services__button"></i>
+      <div class="services__modal">
+        <div class="services__modal-content">
+          <h4 class="services__modal-title">
+            Post
+            <br />
+            settings
+          </h4>
+          <i class="uil uil-times services__modal-close"></i>
+          <ul class="services__modal-services grid">
+            <li class="services__modal-service">
+              <a
+                href="{% url 'block' offer.user %}"
+                class="button button--flex button--small button--link"
+              >
+                {% if request.user not in offer.user.profile.blocked %}
+                Block
+                {% else %}
+                Unblock
+                {% endif %}
+              </a>
+            </li>
+            <li class="services__modal-service">
+              <a
+                href="{% url 'post:oreport' offer.pk %}"
+                class="button button--flex button--small button--link"
+              >
+                Report
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </time>
+    <div class="project__title">{{ offer.head|urlize_target_blank }}</div>
+    <br />
+    <p class="project__description">
+      {{ offer.content|urlize_target_blank }}
+      <br />
+      {% if offer.image %}
+      <img src="{{ offer.image.url }}" alt="" class="project__img" />
+      {% endif %}
+      <br />
+      <a
+        href="{% url 'post:olike' offer.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        {{ offer.likes.all.count }}
+        {% if request.user in offer.likes.all %}
+        <i class="uil uil-heart-break button__icon"></i>
+        {% else %}
+        <i class="uil uil-heart-alt button__icon"></i>
+        {% endif %}
+      </a>
+      <a
+        href="{% url 'post:apply' offer.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-comments button__icon"></i>
+      </a>
+      {% if offer.user == request.user %}
+      <a
+        href="{% url 'post:odelete' offer.pk %}"
+        class="button button--flex button--white"
+        style="font-size: 1.25rem"
+      >
+        <i class="uil uil-trash-alt button__icon"></i>
+      </a>
+      {% endif %}
+      <br />
+      <br />
+      {% if offer.topics.all %}
+      Topics:
+      {% for Topic in offer.topics.all %}
+      <a
+        href="{% url 'post:otopic' Topic %}"
+        class="button button--flex button--white"
+      >
+        #{{ Topic.name }}
+      </a>
+      {% endfor %}
+      {% endif %}
+    </p>
+  </div>
+</div>
+<br />
+{% endif %}
+{% endfor %}
+<script src="{% static 'js/input.js' %}"></script>
+{% endblock %}

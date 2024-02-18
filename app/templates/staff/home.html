@@ -1,0 +1,111 @@
+{% extends 'app/layout.html' %}
+{% block content %}
+<h2 class="section__title">Staff</h2>
+<br />
+<div class="services__container container grid">
+  <div class="services__content">
+    <div>
+      <i class="uil uil-bag-alt services__icon"></i>
+      <h3 class="services__title">
+        Reported
+        <br />
+        Offers
+      </h3>
+    </div>
+    <a
+      href="{% url 'staff:feed' %}"
+      class="button button--flex button--small button--link"
+    >
+      Go
+      <i class="uil uil-arrow-right button__icon"></i>
+    </a>
+  </div>
+  <div class="services__content">
+    <div>
+      <i class="uil uil-globe services__icon"></i>
+      <h3 class="services__title">
+        Reported
+        <br />
+        Posts
+      </h3>
+    </div>
+    <a
+      href="{% url 'staff:social' %}"
+      class="button button--flex button--small button--link"
+    >
+      Go
+      <i class="uil uil-arrow-right button__icon"></i>
+    </a>
+  </div>
+  <div class="services__content">
+    <div>
+      <i class="uil uil-chat services__icon"></i>
+      <h3 class="services__title">
+        Reported
+        <br />
+        Chats
+      </h3>
+    </div>
+    <a
+      href="{% url 'staff:chat' %}"
+      class="button button--flex button--small button--link"
+    >
+      Go
+      <i class="uil uil-arrow-right button__icon"></i>
+    </a>
+  </div>
+  <div class="services__content">
+    <div>
+      <i class="uil uil-user-circle services__icon"></i>
+      <h3 class="services__title">
+        Reported
+        <br />
+        Users
+      </h3>
+    </div>
+    <a
+      href="{% url 'staff:user' %}"
+      class="button button--flex button--small button--link"
+    >
+      Go
+      <i class="uil uil-arrow-right button__icon"></i>
+    </a>
+  </div>
+  <div class="services__content">
+    <div>
+      <i class="uil uil-check-circle services__icon"></i>
+      <h3 class="services__title">
+        Accept
+        <br />
+        Business
+      </h3>
+    </div>
+    <a
+      href="{% url 'staff:blist' %}"
+      class="button button--flex button--small button--link"
+    >
+      Go
+      <i class="uil uil-arrow-right button__icon"></i>
+    </a>
+  </div>
+  {% if request.user.is_superuser %}
+  <div class="services__content">
+    <div>
+      <i class="uil uil-wrench services__icon"></i>
+      <h3 class="services__title">
+        Accept
+        <br />
+        Staff
+      </h3>
+    </div>
+    <a
+      href="{% url 'staff:slist' %}"
+      class="button button--flex button--small button--link"
+    >
+      Go
+      <i class="uil uil-arrow-right button__icon"></i>
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
